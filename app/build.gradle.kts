@@ -51,11 +51,11 @@ android {
         }
     }
     ksp {
-		arg(
-			"room.schemaLocation",
-			"$projectDir/schemas"
-		)
-	}
+        arg(
+            "room.schemaLocation",
+            "$projectDir/schemas"
+        )
+    }
 }
 
 dependencies {
@@ -82,6 +82,11 @@ dependencies {
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.7.0")
+
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
