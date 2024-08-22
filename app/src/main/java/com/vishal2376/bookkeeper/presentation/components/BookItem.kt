@@ -53,6 +53,7 @@ fun BookItem(book: BookEntity, onBookmarkClick: (String, Boolean) -> Unit) {
                 .height(130.dp),
             model = book.image,
             placeholder = painterResource(id = R.drawable.broken_image),
+            error = painterResource(id = R.drawable.broken_image),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
