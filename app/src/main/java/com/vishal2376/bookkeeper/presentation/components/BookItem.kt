@@ -26,12 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.vishal2376.bookkeeper.R
 import com.vishal2376.bookkeeper.data.local.BookEntity
-import com.vishal2376.bookkeeper.ui.theme.BookKeeperTheme
 import com.vishal2376.bookkeeper.ui.theme.bodyTextStyle
 import com.vishal2376.bookkeeper.ui.theme.titleTextStyle
 import com.vishal2376.bookkeeper.ui.theme.yellow
@@ -104,27 +102,6 @@ fun BookItem(book: BookEntity, onBookmarkClick: (String, Boolean) -> Unit) {
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimary
             )
-        }
-    }
-}
-
-
-@Preview
-@Composable
-private fun fdfd() {
-    BookKeeperTheme(darkTheme = false) {
-        BookItem(
-            book = BookEntity(
-                id = "parturient",
-                image = "utamur",
-                score = 6.7,
-                popularity = 5597,
-                title = "Attack on Titan",
-                publishedChapterDate = 1275542373,
-                isBookmarked = false
-            )
-        ) { id, isBookmarked ->
-
         }
     }
 }
