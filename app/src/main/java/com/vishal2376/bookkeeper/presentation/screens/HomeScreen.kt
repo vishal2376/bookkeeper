@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +55,16 @@ fun HomeScreen(books: List<BookEntity>, viewModel: BookViewModel) {
         val scope = rememberCoroutineScope()
         val bookListState = rememberLazyListState()
 
+        val scrollIndex by remember {
+            derivedStateOf {
+                bookListState.firstVisibleItemIndex
+            }
+        }
+
+        if (years.isNotEmpty()) {
+            selectedYearIndex = years.indexOf(books[scrollIndex].publishedChapterDate.toYear())
+        }
+
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -68,7 +79,7 @@ fun HomeScreen(books: List<BookEntity>, viewModel: BookViewModel) {
                         .clickable {
                             selectedYearIndex = index
                             scope.launch {
-                                bookListState.animateScrollToItem(
+                                bookListState.scrollToItem(
                                     groupedBooks.values
                                         .take(index)
                                         .sumOf { it.size } + index
