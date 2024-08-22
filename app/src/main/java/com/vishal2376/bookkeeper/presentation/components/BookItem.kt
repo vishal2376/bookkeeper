@@ -1,5 +1,7 @@
 package com.vishal2376.bookkeeper.presentation.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -21,9 +23,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -37,12 +42,24 @@ import com.vishal2376.bookkeeper.ui.theme.yellowDark
 import com.vishal2376.bookkeeper.utils.toFormattedDate
 
 @Composable
-fun BookItem(book: BookEntity, onBookmarkClick: (String, Boolean) -> Unit) {
+fun BookItem(book: BookEntity, onBookmarkClick: (String, Boolean) -> Unit, animDelay: Int = 100) {
+
+    val alphaAnimation = remember { Animatable(initialValue = 0f) }
+
+    LaunchedEffect(animDelay) {
+        alphaAnimation.animateTo(targetValue = 1f, animationSpec = tween(700, animDelay))
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primary)
-            .padding(16.dp, 8.dp),
+            .padding(16.dp, 8.dp)
+            .graphicsLayer {
+                alpha = alphaAnimation.value
+                scaleX = alphaAnimation.value
+                scaleY = alphaAnimation.value
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {

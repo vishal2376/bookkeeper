@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -45,7 +46,6 @@ fun HomeScreen(books: List<BookEntity>, viewModel: BookViewModel) {
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
     ) {
-
 
         val groupedBooks = books.groupBy { it.publishedChapterDate.toYear() }
         val years = groupedBooks.keys.toList()
@@ -122,8 +122,8 @@ fun HomeScreen(books: List<BookEntity>, viewModel: BookViewModel) {
                         )
                     }
                 }
-                items(books) { book ->
-                    BookItem(book = book, onBookmarkClick = { id, isBookmarked ->
+                itemsIndexed(books) { index, book ->
+                    BookItem(book = book, animDelay = index, onBookmarkClick = { id, isBookmarked ->
                         viewModel.toggleBookmark(id, isBookmarked)
                     })
                 }
