@@ -20,14 +20,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.vishal2376.bookkeeper.data.local.BookEntity
 import com.vishal2376.bookkeeper.presentation.components.BookItem
+import com.vishal2376.bookkeeper.ui.theme.black900
 import com.vishal2376.bookkeeper.ui.theme.blue
 import com.vishal2376.bookkeeper.ui.theme.titleTextStyle
 import com.vishal2376.bookkeeper.utils.toYear
@@ -43,17 +45,14 @@ fun HomeScreen(books: List<BookEntity>, viewModel: BookViewModel) {
             .background(MaterialTheme.colorScheme.primary)
     ) {
 
+
         val groupedBooks = books.groupBy { it.publishedChapterDate.toYear() }
         val years = groupedBooks.keys.toList()
 
+        var selectedYearIndex by remember { mutableIntStateOf(0) }
+
         val scope = rememberCoroutineScope()
         val bookListState = rememberLazyListState()
-
-        val currentYear by remember {
-            derivedStateOf {
-                groupedBooks.keys.elementAtOrNull(bookListState.firstVisibleItemIndex) ?: -1
-            }
-        }
 
         LazyRow(
             modifier = Modifier
@@ -67,6 +66,7 @@ fun HomeScreen(books: List<BookEntity>, viewModel: BookViewModel) {
                     text = year.toString(),
                     modifier = Modifier
                         .clickable {
+                            selectedYearIndex = index
                             scope.launch {
                                 bookListState.animateScrollToItem(
                                     groupedBooks.values
@@ -76,10 +76,11 @@ fun HomeScreen(books: List<BookEntity>, viewModel: BookViewModel) {
                             }
                         }
                         .background(
-                            if (currentYear == years.indexOf(year)) blue else MaterialTheme.colorScheme.primary,
+                            if (selectedYearIndex == index) blue else MaterialTheme.colorScheme.primary,
                             RoundedCornerShape(8.dp)
                         )
-                        .padding(8.dp)
+                        .padding(8.dp, 4.dp),
+                    color = if (selectedYearIndex == index) black900 else MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
